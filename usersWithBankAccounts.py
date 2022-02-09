@@ -6,9 +6,18 @@ class BankAccount:
         BankAccount.accounts.append(self)
 
     def deposit(self, amount):
-        self.balance = self.balance + amount
-        return self
+        if amount <= 0:
+            return self
+        else:
+            self.balance = self.balance + amount
+            return self
+
     def withdraw(self, amount):
+        if amount <= 0: 
+            return self
+        elif amount > self.balance:
+            return self
+
         self.balance = self.balance - amount
         return self
     def display_account_info(self):
@@ -29,6 +38,15 @@ class User:
         self.email = email_address
         User.user.append(self)
         self.account = {"checkings" : BankAccount(), "savings" : BankAccount()}
+
+    def make_deposit(self, amount, account_name):
+        self.account[account_name].deposit(amount)
+        return self
+
+    def make_withdraw(self, amount, account_name):
+        self.account[account_name].withdraw(amount)
+        return self
+
     @classmethod
     def printEverything(cls):
         for users in cls.user:
@@ -36,18 +54,13 @@ class User:
             print(f'User: {users.name} The Savings Balance is {users.account["savings"].balance}')
 
 
-# {"checkings" : BankAccount()}
 kostas = User("kostas")
-kostas.account["checkings"].deposit(100)
-kostas.account["savings"].deposit(4400)
+kostas.make_deposit(100 ,"checkings")
+kostas.make_deposit(4400 ,"savings")
 adriyana = User("adriyana")
-adriyana.account["checkings"].deposit(500)
-adriyana.account["savings"].deposit(5300)
+adriyana.make_deposit(500 ,"checkings")
+adriyana.make_deposit(5300 ,"savings")
 
 User.printEverything()
 
 
-# kostas.account["checkings"].display_account_info()
-# kostas.account.deposit(66)
-
-# kostas.account.display_account_info()
